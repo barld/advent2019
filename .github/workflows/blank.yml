@@ -13,4 +13,4 @@ jobs:
       run: sudo snap install --classic kotlin
     - name: Run a multi-line script
       run: |
-        sudo kotlinc src/main.kt -include-runtime -d main.jar
+        sudo kotlinc ./src/main.kt -include-runtime -d main.jar
