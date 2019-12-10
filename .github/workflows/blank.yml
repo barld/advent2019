@@ -1,0 +1,16 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: install compiler
+      run: sudo snap install --classic kotlin
+    - name: Run a multi-line script
+      run: |
+        sudo kotlinc ./src/main.kt -include-runtime -d main.jar
