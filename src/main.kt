@@ -1,4 +1,5 @@
 import java.io.File
+import kotlin.math.absoluteValue
 
 fun main(args: Array<String>) {
     println("day 1A: " + day1A())
@@ -6,6 +7,8 @@ fun main(args: Array<String>) {
 
     println("day 2A: " + day2A())
     println("day 2B: " + day2B())
+
+    println("day 3A: " + day3A())
 }
 
 fun day1A(): Int {
@@ -84,3 +87,36 @@ fun day2B(): Int {
 
     return 0
 }
+
+fun day3A(): Int {
+    val input = File("C:\\Users\\Barld Boot\\IdeaProjects\\advent2019\\src\\day3.txt")
+        .readLines()
+        .map { it.split(',') }
+
+    fun takeStep(origin: Pair<Int, Int>, direction: Char): Pair<Int, Int> {
+        return when (direction) {
+            'L' -> Pair(origin.first - 1, origin.second)
+            'R' -> Pair(origin.first + 1, origin.second)
+            'U' -> Pair(origin.first, origin.second + 1)
+            else -> Pair(origin.first, origin.second - 1)
+        }
+    }
+
+    fun manhatan(coordinate: Pair<Int,Int>): Int {
+        return coordinate.first.absoluteValue + coordinate.second.absoluteValue
+    }
+
+    val coordinates = input.map {
+        it.flatMap<String, Char> { s ->
+            val to = s.drop(1).toInt()
+            (1..to).map { _ -> s[0] }
+        }
+            .fold(emptyList<Pair<Int, Int>>().plus(Pair(0, 0)), { acc, item -> acc.plus(takeStep(acc.last(), item)) })
+    }
+
+    return coordinates[0].intersect(coordinates[1])
+        .map{ manhatan(it) }
+        .filter { it > 0 }
+        .min()!!
+}
+
